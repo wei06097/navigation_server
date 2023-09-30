@@ -1,4 +1,4 @@
-use super::super::structs::{Params, GeoCoord, ImgCoord};
+use super::super::structs::{Params, GeoCoord, ImgCoord, NodesMap};
 
 pub fn img_to_geo(params: &Params, xy: ImgCoord) -> GeoCoord {
     let x = xy[0] as f64;
@@ -22,4 +22,22 @@ pub fn geo_to_img(params: &Params, lonlat: GeoCoord) -> ImgCoord {
     let x = x as u64;
     let y = y as u64;
     [x, y]
+}
+
+pub fn get_nearby_node(nodes: &NodesMap, xy: ImgCoord) -> String {
+    let distance_vec: Vec<(String, u64)> = nodes.keys()
+        .map(|key| {
+            let point = nodes[key].img_coord;
+            let x1 = xy[0] as i64;
+            let y1 = xy[1] as i64;
+            let x2 = point[0] as i64;
+            let y2 = point[1] as i64;
+            let [dx, dy] = [x2-x1, y2-y1];
+            let distance = ((dx*dx + dy*dy) as f64).sqrt() as u64;
+            (key.clone(), distance)
+        }).collect();
+    match distance_vec.iter().min_by_key(|(_, distance)| distance) {
+        Some((key, _)) => key.clone(),
+        _ => String::new(),
+    }
 }

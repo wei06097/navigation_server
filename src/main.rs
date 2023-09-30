@@ -1,22 +1,25 @@
 // use actix_web::{get, post, web, App, HttpRequest, HttpResponse, HttpServer, Responder};
 use navigation_server::school_map::{
-    self, coordinate,
-    structs::{Params, NodesMap},
+    read_json, dijkstra, coordinate,
+    structs::{NodesMap, Params},
 };
 
 fn main() {
     let path = vec!["src", "assets", "data.json"];
-    let nodes = school_map::read_json::<NodesMap>(&path).unwrap();
-    let _result = school_map::dijkstra(&nodes, "5", "62");
+    let nodes = read_json::<NodesMap>(&path).unwrap();
+    let _result = dijkstra(&nodes, "5", "62");
     // println!("{:#?}", result);
 
     let path = vec!["src", "assets", "params.json"];
-    let params = school_map::read_json::<Params>(&path).unwrap();
+    let params = read_json::<Params>(&path).unwrap();
     let [lon, lat] = coordinate::img_to_geo(&params, [1047, 1117]);
     let [_x, _y] = coordinate::geo_to_img(&params, [lon, lat]);
     // println!("{}, {}", lat, lon);
     // println!("{}, {}", x, y);
-    
+
+    let _node = coordinate::get_nearby_node(&nodes, [1047, 1117]);
+    // println!("{}", node);
+
 }
 
 // #[get("/nodes")]
