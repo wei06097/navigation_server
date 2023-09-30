@@ -1,11 +1,18 @@
 // use actix_web::{get, post, web, App, HttpRequest, HttpResponse, HttpServer, Responder};
-use navigation_server::school_map;
+use navigation_server::school_map::{
+    self,
+    structs::{Params, NodesMap}
+};
 
 fn main() {
     let path = vec!["src", "assets", "data.json"];
-    let nodes = school_map::read_nodes(&path).unwrap();
+    let nodes = school_map::read_json::<NodesMap>(&path).unwrap();
     let result = school_map::dijkstra(&nodes, "5", "62");
     println!("{:#?}", result);
+
+    let path = vec!["src", "assets", "params.json"];
+    let params = school_map::read_json::<Params>(&path).unwrap();
+    println!("{:#?}", params);
 }
 
 // #[get("/nodes")]

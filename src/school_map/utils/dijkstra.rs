@@ -1,4 +1,3 @@
-use super::super::types::*;
 use super::super::structs::*;
 
 pub fn dijkstra(nodes: &NodesMap, source: &str, destination: &str) -> Vec<String> {
