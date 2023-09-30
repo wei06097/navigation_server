@@ -1,6 +1,6 @@
-use super::super::types::NodesMap;
 use std::fs::File;
 use std::io::{self, Read};
+use serde::{Serialize, Deserialize};
 
 /// 讀取文件
 fn read_file(path_strings: &Vec<&str>) -> Result<String, io::Error> {
@@ -12,9 +12,12 @@ fn read_file(path_strings: &Vec<&str>) -> Result<String, io::Error> {
     Ok(s)
 }
 
-/// 將 json 檔案讀取為 Node Struct
-pub fn read_nodes(path_strings: &Vec<&str>) -> Result<NodesMap, io::Error> {
+/// 將 json 檔案讀取為 Struct
+pub fn read_json<T>(path_strings: &Vec<&str>) -> Result<T, io::Error>
+where
+    for<'a> T: Serialize + Deserialize<'a>,
+{
     let content = read_file(path_strings)?;
-    let data: NodesMap = serde_json::from_str(&content)?;
+    let data: T = serde_json::from_str(&content)?;
     Ok(data)
 }
