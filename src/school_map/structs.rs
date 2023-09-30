@@ -1,6 +1,10 @@
-use super::types::*;
 use std::collections::HashMap;
 use serde::{Serialize, Deserialize};
+
+/// 型態定義
+pub type NodesMap = HashMap<String, Node>;
+pub type NodeInfoMap = HashMap<String, NodeInfo>;
+pub type Distance = f64;
 
 /// 地圖的每個節點
 #[derive(Debug, Serialize, Deserialize)]
@@ -26,4 +30,13 @@ impl NodeInfo {
             parent: String::new(),
         }
     }
+}
+
+/// 座標轉換函數的參數
+#[derive(Debug, Serialize, Deserialize)]
+pub struct Params {
+    theta_deg: f64,
+    base: Vec<f64>,
+    c12: Vec<f64>,
+    c34: Vec<f64>,
 }
