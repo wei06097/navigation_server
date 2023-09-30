@@ -4,13 +4,15 @@ use serde::{Serialize, Deserialize};
 /// 型態定義
 pub type NodesMap = HashMap<String, Node>;
 pub type NodeInfoMap = HashMap<String, NodeInfo>;
+pub type GeoCoord = [f64; 2];
+pub type ImgCoord = [u64; 2];
 pub type Distance = f64;
 
 /// 地圖的每個節點
 #[derive(Debug, Serialize, Deserialize)]
 pub struct Node {
-    pub geo_coord: [f64; 2],
-    pub img_coord: [u64; 2],
+    pub geo_coord: GeoCoord,
+    pub img_coord: ImgCoord,
     pub edges: HashMap<String, Distance>,
 }
 
@@ -35,8 +37,8 @@ impl NodeInfo {
 /// 座標轉換函數的參數
 #[derive(Debug, Serialize, Deserialize)]
 pub struct Params {
-    theta_deg: f64,
-    base: Vec<f64>,
-    c12: Vec<f64>,
-    c34: Vec<f64>,
+    pub theta_deg: f64,
+    pub base: GeoCoord,
+    pub c12: [f64; 2],
+    pub c34: [f64; 2],
 }
