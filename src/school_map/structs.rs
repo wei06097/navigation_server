@@ -32,6 +32,34 @@ impl NodeInfo {
             parent: String::new(),
         }
     }
+    pub fn locke_node(&mut self) {
+        self.locked = true;
+    }
+    pub fn set_loss(&mut self, loss: Distance) {
+        self.loss = loss;
+    }
+    pub fn set_parent(&mut self, parent: String) {
+        self.parent = parent;
+    }
+}
+
+/// 用來紀錄讀取 Node 的 key
+pub struct NodeKey {
+    pub key: String
+}
+
+impl NodeKey {
+    pub fn new(key: &str) -> NodeKey {
+        NodeKey {
+            key: key.to_owned()
+        }
+    }
+    pub fn get(&self) -> &str {
+        &self.key
+    }
+    pub fn set(&mut self, key: &str) {
+        self.key = key.to_owned();
+    }
 }
 
 /// 座標轉換函數的參數
