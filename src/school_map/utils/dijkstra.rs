@@ -1,8 +1,8 @@
 use crate::school_map::structs::*;
 
-pub fn dijkstra(nodes: &NodesMap, source: &str, destination: &str) -> Vec<String> {
+pub fn dijkstra(nodes: &NodesMap, source: &str, destination: &str) -> (Vec<String>, f64) {
     if source == destination {
-        return vec![];
+        return (vec![], 0.0);
     }
     // 產生 NodeInfo 的 HashMap，並初始化
     let mut node_infos: NodeInfoMap = Default::default();
@@ -71,15 +71,15 @@ pub fn dijkstra(nodes: &NodesMap, source: &str, destination: &str) -> Vec<String
             break;
         }
     }
-    // 從終點往回找
-    let mut path: Vec<String> = vec![];
+    // 從終點往回找路徑
+    let mut base_path: Vec<String> = vec![];
     let mut current_origin = destination.to_string();
     loop {
         let current = {
             let current = &current_origin;
             &current[..]
         };
-        path.push(current.to_string());
+        base_path.push(current.to_string());
         match node_infos[current].parent.as_str() {
             "" => break,
             other => {
@@ -88,6 +88,13 @@ pub fn dijkstra(nodes: &NodesMap, source: &str, destination: &str) -> Vec<String
             }
         }
     }
-    path.reverse();
-    path
+    base_path.reverse();
+    // 算總距離
+    let mut totaal_distance: f64 = 0.0;
+    for window in base_path.windows(2) {
+        let current = &window[0];
+        let next = &window[1];
+        totaal_distance = totaal_distance + nodes[current].edges[next];
+    }
+    (base_path, totaal_distance)
 }
