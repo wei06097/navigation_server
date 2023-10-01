@@ -1,8 +1,8 @@
 use std::collections::HashMap;
-use crate::school_map::structs::{Node, NodeInfo, Params};
+use crate::school_map::structs::{Node, NodeInfo, NodeKey, Params};
 
 #[test]
-fn node_creation() {
+fn create_node() {
     let mut edge_hash = HashMap::new();
     edge_hash.insert("edge1".to_owned(), 15.5);
     let node = Node {
@@ -16,7 +16,7 @@ fn node_creation() {
 }
 
 #[test]
-fn node_info_default() {
+fn create_node_info() {
     let node_info = NodeInfo::default();
     assert!(!node_info.locked);
     assert_eq!(node_info.loss, f64::MAX);
@@ -24,7 +24,25 @@ fn node_info_default() {
 }
 
 #[test]
-fn params_creation() {
+fn write_node_info() {
+    let mut node_info = NodeInfo::default();
+    node_info.locke_node();
+    node_info.set_loss(0.5);
+    node_info.set_parent("parent".to_owned());
+    assert!(node_info.locked);
+    assert_eq!(node_info.loss, 0.5);
+    assert_eq!(node_info.parent, "parent");
+}
+
+#[test]
+fn node_key() {
+    let mut node_key = NodeKey::new("");
+    node_key.set("key");
+    assert_eq!(node_key.get(), "key");
+}
+
+#[test]
+fn create_params() {
     let params = Params {
         theta_deg: 0.0,
         base: [121.548763, 25.012345],
