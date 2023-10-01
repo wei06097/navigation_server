@@ -1,4 +1,4 @@
-use super::super::structs::*;
+use crate::school_map::structs::*;
 
 pub fn dijkstra(nodes: &NodesMap, source: &str, destination: &str) -> Vec<String> {
     if source == destination {
