@@ -8,3 +8,10 @@ mod utils {
 pub use utils::dijkstra::dijkstra;
 pub use utils::read_json::read_json;
 pub use utils::coordinate;
+
+// 測試
+#[cfg(test)]
+mod tests {
+    mod structs;
+    mod utils;
+}
