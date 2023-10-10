@@ -41,7 +41,7 @@ pub async fn directions(data: web::Json<RequestBody>) -> impl Responder {
     let (best_path, distance) = school_map::dijkstra(&nodes, node_a, node_b);
     // 算實際位置跟 node 的距離
     let distance_s = coordinate::haversine_formula(nodes[node_a].geo_coord, source_lonlat);
-    let distance_d = coordinate::haversine_formula(nodes[node_a].geo_coord, source_lonlat);
+    let distance_d = coordinate::haversine_formula(nodes[node_b].geo_coord, destination_lonlat);
     let total_distance = distance + distance_s + distance_d;
     HttpResponse::Ok().json(ResponseBody {
         source_xy, destination_xy, best_path, total_distance
