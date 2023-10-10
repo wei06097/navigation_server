@@ -2,6 +2,7 @@ use actix_web::web;
 
 mod graph;
 mod directions;
+mod transform;
 
 // 檔案路徑
 pub const NODES_FILEPATH: [&str; 3] = ["src", "assets", "data.json"];
@@ -13,5 +14,6 @@ pub fn config(cfg: &mut web::ServiceConfig) {
         web::scope("/navigation")
             .service(graph::graph)
             .service(directions::directions)
+            .service(transform::transform)
     );  
 }
