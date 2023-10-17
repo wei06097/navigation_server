@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"struct":["Node","NodeInfo","NodeKey","Params"],"type":["Distance","GeoCoord","ImgCoord","NodeInfoMap","NodesMap"]};

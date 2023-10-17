@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"constant":["NODES_FILEPATH","PARAMS_FILEPATH"],"fn":["config"]};
