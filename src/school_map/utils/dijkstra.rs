@@ -1,5 +1,26 @@
 use crate::school_map::structs::*;
 
+/// 最佳路徑演算法
+/// # 說明
+/// - 輸入
+///     - 校內地圖 Graph 資訊
+///     - 起點編號
+///     - 終點編號
+/// - 輸出
+///     - 最佳路徑(編號)
+///     - 總距離
+///
+/// # Examples
+/// 需要 [school_map::read_json](./fn.read_json.html) 函數讀取 Graph 資訊
+/// ```
+/// use crate::navigation_server::school_map::structs::NodesMap;
+/// use crate::navigation_server::school_map::read_json;
+/// use crate::navigation_server::school_map::dijkstra;
+///
+/// let path = vec!["src", "assets", "data.json"]; //檔案路徑
+/// let nodes = read_json::<NodesMap>(&path).unwrap(); //讀取檔案並轉為結構
+/// let (best_path, distance) = dijkstra(&nodes, "1", "10");
+/// ```
 pub fn dijkstra(nodes: &NodesMap, source: &str, destination: &str) -> (Vec<String>, f64) {
     if source == destination {
         return (vec![], 0.0);

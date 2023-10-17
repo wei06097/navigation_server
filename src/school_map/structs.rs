@@ -1,14 +1,22 @@
 use std::collections::HashMap;
 use serde::{Serialize, Deserialize};
 
-/// 型態定義
+/// Node HashMap
 pub type NodesMap = HashMap<String, Node>;
+/// NodeInfo HashMap
 pub type NodeInfoMap = HashMap<String, NodeInfo>;
+/// 經緯度座標
 pub type GeoCoord = [f64; 2];
+/// 平面圖像素座標
 pub type ImgCoord = [u64; 2];
+/// Node 相鄰點距離
 pub type Distance = f64;
 
-/// 地圖的每個節點
+/// 校內地圖 Graph 資訊裡的單個點
+/// # 元素
+/// - geo_coord: 經緯度座標
+/// - img_coord: 平面圖像素座標
+/// - edges: 相鄰點編號:距離
 #[derive(Debug, Serialize, Deserialize)]
 pub struct Node {
     pub geo_coord: GeoCoord,
@@ -17,6 +25,14 @@ pub struct Node {
 }
 
 /// dijkstra 演算法用
+/// # 元素
+/// - locked: 是否不再更新損失
+/// - loss: 損耗
+/// - parent: 父節點
+/// # 方法
+/// - locke_node(): 停止更新損失
+/// - set_loss(): 紀錄損耗
+/// - set_parent(): 停止更新損失後紀錄父節點
 #[derive(Debug, Serialize, Deserialize)]
 pub struct NodeInfo {
     pub locked: bool,
@@ -43,7 +59,7 @@ impl NodeInfo {
     }
 }
 
-/// 用來紀錄讀取 Node 的 key
+/// dijkstra 演算法用
 pub struct NodeKey {
     pub key: String
 }
@@ -63,6 +79,11 @@ impl NodeKey {
 }
 
 /// 座標轉換函數的參數
+/// # 元素
+/// - theta_deg: 經緯度座標與平面圖座標的角度差
+/// - base: 平面圖在原點時對應的經緯度
+/// - c12: 旋轉矩陣參數 (理論上和 c34 反比)
+/// - c34: 旋轉矩陣參數
 #[derive(Debug, Serialize, Deserialize)]
 pub struct Params {
     pub theta_deg: f64,

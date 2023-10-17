@@ -1,6 +1,24 @@
 use crate::school_map::structs::{Params, GeoCoord, ImgCoord, NodesMap};
 
-/// 平面圖像素座標轉經緯度座標
+/// 平面圖像素座標 -> 經緯度座標
+/// # 說明
+/// - 輸入
+///     - 座標轉換函數相關參數
+///     - 平面圖像素座標
+/// - 輸出
+///     - 經緯度座標
+///
+/// # Examples
+/// 需要 [school_map::read_json](../fn.read_json.html) 函數讀取參數
+/// ```
+/// use crate::navigation_server::school_map::read_json;
+/// use crate::navigation_server::school_map::structs::Params;
+/// use crate::navigation_server::school_map::coordinate::img_to_geo;
+///
+/// let path = vec!["src", "assets", "params.json"]; //檔案路徑
+/// let params = read_json::<Params>(&path).unwrap(); //讀取檔案並轉為結構
+/// let lonlat_coord = img_to_geo(&params, [20, 30]);
+/// ```
 pub fn img_to_geo(params: &Params, xy: ImgCoord) -> GeoCoord {
     let x = xy[0] as f64;
     let y = xy[1] as f64;
@@ -12,7 +30,25 @@ pub fn img_to_geo(params: &Params, xy: ImgCoord) -> GeoCoord {
     [lon, lat]
 }
 
-/// 經緯度座標轉平面圖像素座標
+/// 經緯度座標 -> 平面圖像素座標
+/// # 說明
+/// - 輸入
+///     - 座標轉換函數相關參數
+///     - 經緯度座標
+/// - 輸出
+///     - 平面圖像素座標
+///
+/// # Examples
+/// 需要 [school_map::read_json](../fn.read_json.html) 函數讀取參數
+/// ```
+/// use crate::navigation_server::school_map::read_json;
+/// use crate::navigation_server::school_map::structs::Params;
+/// use crate::navigation_server::school_map::coordinate::geo_to_img;
+///
+/// let path = vec!["src", "assets", "params.json"]; //檔案路徑
+/// let params = read_json::<Params>(&path).unwrap(); //讀取檔案並轉為結構
+/// let xy_coord = geo_to_img(&params, [121.54026281, 25.01236468]);
+/// ```
 pub fn geo_to_img(params: &Params, lonlat: GeoCoord) -> ImgCoord {
     let [a, b] = &params.base;
     let [c3, c4] = &params.c34;
@@ -26,7 +62,25 @@ pub fn geo_to_img(params: &Params, lonlat: GeoCoord) -> ImgCoord {
     [x, y]
 }
 
-/// 取得已標記點內最近的點
+/// 取得最近的已標記點
+/// # 說明
+/// - 輸入
+///     - 校內地圖 Graph 資訊
+///     - 平面圖像素座標
+/// - 輸出
+///     - 最近的點
+///
+/// # Examples
+/// 需要 [school_map::read_json](../fn.read_json.html) 函數讀取參數
+/// ```
+/// use crate::navigation_server::school_map::structs::NodesMap;
+/// use crate::navigation_server::school_map::read_json;
+/// use crate::navigation_server::school_map::coordinate::get_nearby_node;
+///
+/// let path = vec!["src", "assets", "data.json"]; //檔案路徑
+/// let nodes = read_json::<NodesMap>(&path).unwrap(); //讀取檔案並轉為結構
+/// let nearby_node = get_nearby_node(&nodes, [20, 30]);
+/// ```
 pub fn get_nearby_node(nodes: &NodesMap, xy: ImgCoord) -> String {
     let distance_vec: Vec<(String, u64)> = nodes.keys()
         .map(|key| {
@@ -45,7 +99,23 @@ pub fn get_nearby_node(nodes: &NodesMap, xy: ImgCoord) -> String {
     }
 }
 
-/// 經緯度差算距離
+/// 算出兩個經緯度座標間的距離
+/// # 說明
+/// - 輸入
+///     - 經緯度座標 A
+///     - 經緯度座標 B
+/// - 輸出
+///     - 距離 (公尺)
+///
+/// # Examples
+/// ```
+/// use crate::navigation_server::school_map::coordinate::haversine_formula;
+///
+/// let distance = haversine_formula(
+///     [121.54026281917675, 25.012364685321245],
+///     [121.5404747956079, 25.012529348340735]
+/// );
+/// ```
 pub fn haversine_formula([lon1, lat1]: GeoCoord, [lon2, lat2]: GeoCoord) -> f64 {
     // 將經緯度轉為弧度
     let lat1_rad = lat1.to_radians();
