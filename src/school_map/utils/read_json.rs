@@ -12,7 +12,24 @@ fn read_file(path_strings: &Vec<&str>) -> Result<String, io::Error> {
     Ok(s)
 }
 
-/// 將 json 檔案讀取為 Struct
+/// 讀取 JSON 檔案後轉成指定的資料型態
+/// # 說明
+/// - 輸入
+///     - 檔案相對路徑
+/// - 輸出
+///     - Ok: T 對應到的資料型態
+///     - Err: io::Error
+/// - 泛型 T 必須實現兩種 Trait
+///     - serde::Serialize
+///     - serde::Deserialize
+/// # Examples
+/// ```
+/// use crate::navigation_server::school_map::structs::NodesMap;
+/// use crate::navigation_server::school_map::read_json;
+/// 
+/// let path = vec!["src", "assets", "data.json"]; //檔案路徑
+/// let nodes = read_json::<NodesMap>(&path).unwrap(); //讀取檔案並轉為結構
+/// ```
 pub fn read_json<T>(path_strings: &Vec<&str>) -> Result<T, io::Error>
 where
     for<'a> T: Serialize + Deserialize<'a>,
